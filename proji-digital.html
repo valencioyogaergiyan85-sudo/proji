@@ -213,6 +213,8 @@
     .pill-wetv    { background:rgba(0,200,83,.85);   color:#003; }
     .pill-capcut  { background:rgba(240,240,240,.85);color:#000; }
     .pill-vidio   { background:rgba(192,57,43,.85);  color:#fff; }
+    .zoom  { background:linear-gradient(135deg,#2D8CFF,#0a3a80); }
+    .pill-zoom    { background:rgba(45,140,255,.85);  color:#fff; }
 
     /* ── DETAIL PAGE ── */
     #detail-page { display:none; min-height:100vh; background:var(--dark); }
@@ -451,6 +453,21 @@
       </div>
     </div>
 
+    <div class="product-card" onclick="openDetail('zoom')">
+      <div class="card-thumb zoom">
+        <div class="card-pill pill-zoom">ZOOM</div>
+        <span class="card-thumb-letter">Z</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Zoom</div>
+        <div class="card-sub">Meeting tanpa batas</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 8.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
     <div class="product-card" onclick="openDetail('vidio')">
       <div class="card-thumb vidio">
         <div class="card-pill pill-vidio">VIDIO</div>
@@ -580,6 +597,16 @@ const PRODUCTS = {
       ]}
     ]
   },
+  zoom: {
+    name:'Zoom', banner:'Z', bannerClass:'zoom', startPrice:'Rp 8.000',
+    desc:'Meeting online profesional tanpa batas waktu. Cocok untuk kerja, kuliah & webinar.',
+    groups:[{title:'Zoom Premium',items:[
+      {name:'1 Hari',desc:'Akses 1 hari',price:'Rp 8.000'},
+      {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 15.000'},
+      {name:'14 Hari',desc:'Akses 14 hari',price:'Rp 20.000'},
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 30.000'},
+    ]}]
+  },
   vidio: {
     name:'Vidio', banner:'V', bannerClass:'vidio', startPrice:'Rp 12.000',
     desc:'⚠️ Jangan pindah device! Nonton konten Indonesia favorit, olahraga live & series eksklusif.',
@@ -594,10 +621,13 @@ const PRODUCTS = {
 
 const MARQUEE_COLORS = {
   netflix:'#ff4d4d', canva:'#00c4cc', spotify:'#1DB954',
-  disney:'#5c85f5', wetv:'#00c853',   capcut:'#cccccc', vidio:'#e05050'
+  disney:'#5c85f5', wetv:'#00c853', capcut:'#cccccc', zoom:'#2D8CFF', vidio:'#e05050'
 };
 
-// Build marquee
+const WA_NUMBER = '6281291568677';
+let selProduct=null, selPkg=null;
+
+// Build marquee (after variables declared)
 (function buildMarquee(){
   const track = document.getElementById('marquee-track');
   const ids = Object.keys(PRODUCTS);
@@ -605,6 +635,7 @@ const MARQUEE_COLORS = {
   for(let r=0;r<2;r++){
     ids.forEach(id=>{
       const p = PRODUCTS[id];
+      if(!p || !p.name) return;
       const col = MARQUEE_COLORS[id]||'#fff';
       html += `<span class="marquee-item" onclick="openDetail('${id}')">
         <span class="marquee-sep"></span>
@@ -615,9 +646,6 @@ const MARQUEE_COLORS = {
   }
   track.innerHTML = html;
 })();
-
-const WA_NUMBER = '6281291568677';
-let selProduct=null, selPkg=null;
 
 function openDetail(id){
   const p=PRODUCTS[id]; if(!p)return;
