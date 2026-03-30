@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proji Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --dark: rgba(5,8,20,0.0);
+      --card: rgba(8,12,30,0.72);
+      --card2: rgba(12,18,42,0.80);
+      --border: rgba(40,55,120,0.35);
+      --border2: rgba(60,80,160,0.40);
+      --text: #dce8ff;
+      --muted: #5a6a8a;
+      --muted2: #8899bb;
+      --accent: #7eb8f7;
+      --accent2: #a8c8ff;
+      --gold: #7eb8f7;
+      --gold2: #5a9de0;
+      --red: #E50914;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #000;
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SPACE CANVAS BACKGROUND ── */
+    #space-bg {
+      display: block;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    /* All page content sits above canvas */
+    #home-page, #detail-page { position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(5,5,18,0.88);
+      backdrop-filter: blur(28px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem; line-height: 1;
+      display: flex; align-items: flex-end; gap: 0;
+      letter-spacing: -1px;
+    }
+    .logo-pro { color: #fff; font-style: normal; }
+    .logo-ji  { color: #fff; font-style: italic; }
+    .logo-dot { color: var(--red); font-style: normal; font-size: 2.4rem; line-height: 0.65; margin-left: 1px; }
+
+    nav { display: flex; align-items: center; gap: 16px; }
+    .nav-cta {
+      background: linear-gradient(135deg, #2550cc, #6a30d8);
+      color: #fff; font-size: 0.65rem; font-weight: 900;
+      padding: 9px 16px; border-radius: 30px;
+      text-decoration: none; letter-spacing: 1.2px; text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(80,80,255,0.3);
+      transition: box-shadow .3s, transform .2s; white-space: nowrap;
+    }
+    .nav-cta:hover { box-shadow: 0 0 36px rgba(100,60,255,0.55); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 32px 20px 28px;
+      position: relative; overflow: hidden;
+    }
+
+    /* glow orbs */
+    .hero::before {
+      content: '';
+      position: absolute; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(30,80,255,0.14) 0%, transparent 70%);
+      top: -120px; left: -100px; pointer-events: none;
+      animation: orb1 8s ease-in-out infinite alternate;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(120,60,255,0.12) 0%, transparent 70%);
+      bottom: -60px; right: -60px; pointer-events: none;
+      animation: orb2 10s ease-in-out infinite alternate;
+    }
+    @keyframes orb1 { from{transform:translate(0,0) scale(1);} to{transform:translate(40px,30px) scale(1.1);} }
+    @keyframes orb2 { from{transform:translate(0,0) scale(1);} to{transform:translate(-30px,-20px) scale(1.08);} }
+
+    /* Icon cluster */
+    .hero-icons-wrap {
+      position: relative; height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 28px;
+    }
+    .stage-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(40,80,255,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse { 0%,100%{opacity:.6;} 50%{opacity:1;} }
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(60,90,200,0.2);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      animation: ringRotate linear infinite;
+    }
+    .ring-1 { width: 110px; height: 110px; animation-duration: 18s; border-color: rgba(60,90,200,0.25); }
+    .ring-2 { width: 170px; height: 170px; animation-duration: 28s; animation-direction: reverse; }
+    .ring-3 { width: 230px; height: 230px; animation-duration: 38s; border-color: rgba(60,90,200,0.12); }
+    @keyframes ringRotate { from{transform:translate(-50%,-50%) rotate(0deg);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+
+    .app-icon {
+      position: absolute;
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 1px;
+      border: 1px solid rgba(60,80,160,0.45);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05) inset;
+      cursor: pointer;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+    }
+    .app-icon:hover { transform: scale(1.12) translateY(-5px) !important; box-shadow: 0 18px 48px rgba(0,0,0,0.7); z-index: 10; }
+
+    .icon-netflix  { background:linear-gradient(145deg,#E50914,#6b0007); top:50%; left:50%; transform:translate(-50%,-50%); width:62px; height:62px; border-radius:18px; box-shadow:0 0 40px rgba(229,9,20,0.35),0 14px 40px rgba(0,0,0,0.6); animation:floatCenter 5s ease-in-out infinite; z-index:5; }
+    @keyframes floatCenter { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-8px)} }
+    .icon-spotify  { background:linear-gradient(145deg,#1DB954,#0b4023); top:5%;  left:50%; width:46px; height:46px; animation:float1 6s ease-in-out infinite; }
+    .icon-canva    { background:linear-gradient(145deg,#00c4cc,#003b3e); top:42%; left:78%; width:44px; height:44px; animation:float2 7s ease-in-out infinite; }
+    .icon-youtube2 { background:linear-gradient(145deg,#ff0000,#6b0000); top:76%; left:58%; width:44px; height:44px; animation:float3 5.5s ease-in-out infinite; }
+    .icon-disney   { background:linear-gradient(145deg,#113ccf,#050f3e); top:70%; left:18%; width:44px; height:44px; animation:float4 8s ease-in-out infinite; }
+    .icon-wetv     { background:linear-gradient(145deg,#00c853,#003520); top:5%;  left:20%; width:42px; height:42px; animation:float1 7.5s 1s ease-in-out infinite; }
+    .icon-gpt      { background:linear-gradient(145deg,#10a37f,#05291f); top:80%; left:36%; width:40px; height:40px; font-size:0.55rem; font-family:'Nunito',sans-serif; font-weight:900; color:#10a37f; animation:float3 9s .5s ease-in-out infinite; }
+    .icon-zoom     { background:linear-gradient(145deg,#2D8CFF,#0a3a80); top:14%; left:74%; width:40px; height:40px; font-size:0.55rem; font-family:'Nunito',sans-serif; font-weight:900; color:#2D8CFF; animation:float2 8.5s 1.5s ease-in-out infinite; }
+    .icon-vidio    { background:linear-gradient(145deg,#c0392b,#2a0505); top:56%; left:86%; width:38px; height:38px; animation:float4 7s 0.8s ease-in-out infinite; }
+    .icon-capcut   { background:linear-gradient(145deg,#2a2a2a,#060606); top:30%; left:5%;  width:40px; height:40px; animation:float5 6.5s ease-in-out infinite; }
+    .icon-gemini   { background:linear-gradient(145deg,#8b5cf6,#1a0a40); top:5%;  left:68%; width:38px; height:38px; animation:float1 6s 0.5s ease-in-out infinite; }
+
+    .icon-img { width:32px; height:32px; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,0.5)); }
+    .icon-img.lg { width:40px; height:40px; }
+
+    @keyframes float1 { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-12px) rotate(3deg)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-9px) rotate(-2deg)} }
+    @keyframes float3 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+    @keyframes float4 { 0%,100%{transform:translateY(0) rotate(3deg)} 50%{transform:translateY(-7px) rotate(-3deg)} }
+    @keyframes float5 { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-13px) rotate(4deg)} }
+
+    /* Hero text */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 22px;
+      animation: fadeUp .8s ease both;
+    }
+    .eyebrow-pill {
+      font-size: 0.58rem; font-weight: 900; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 13px; border-radius: 30px;
+      background: rgba(20,50,180,0.3);
+      border: 1px solid rgba(80,120,255,0.4);
+      color: var(--accent2); backdrop-filter: blur(8px);
+    }
+    .eyebrow-line { width: 28px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+    .eyebrow-text { font-size: 0.62rem; font-weight: 700; color: var(--muted2); letter-spacing: 1.2px; text-transform: uppercase; }
+
+    .hero-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.55rem; font-weight: 800;
+      line-height: 1.08; color: #fff;
+      letter-spacing: -0.5px; margin-bottom: 18px;
+      animation: fadeUp .8s .1s ease both;
+    }
+    .hero-heading .line-plain { display: block; color: #fff; }
+    .hero-heading .line-accent {
+      display: block;
+      background: linear-gradient(100deg, #7eb8f7 0%, #c4a0ff 55%, #e0d0ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-heading .line-italic {
+      display: block; font-style: italic;
+      background: linear-gradient(110deg, #a8c8ff 0%, #d4b8ff 70%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 0.8rem; color: var(--muted2); line-height: 1.7;
+      margin-bottom: 24px; animation: fadeUp .8s .2s ease both;
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative; margin-bottom: 14px;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .search-bar {
+      width: 100%;
+      background: rgba(10,15,40,0.85);
+      border: 1.5px solid rgba(60,90,200,0.45);
+      border-radius: 14px; padding: 16px 56px 16px 48px;
+      color: #fff; font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem; font-weight: 600; outline: none;
+      backdrop-filter: blur(20px);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .search-bar::placeholder { color: var(--muted); }
+    .search-bar:focus {
+      border-color: rgba(100,140,255,0.7);
+      box-shadow: 0 0 0 3px rgba(60,100,255,0.1), 0 0 30px rgba(60,100,255,0.14);
+    }
+    .search-icon {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 1rem; color: var(--accent); pointer-events: none;
+    }
+    .search-btn {
+      position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+      background: linear-gradient(135deg, #2550cc, #7030e8);
+      border: none; border-radius: 10px;
+      width: 40px; height: 40px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.95rem;
+      box-shadow: 0 0 16px rgba(80,60,255,0.35);
+      transition: box-shadow .2s, transform .15s;
+    }
+    .search-btn:hover { box-shadow: 0 0 26px rgba(100,80,255,0.6); transform: translateY(-50%) scale(1.08); }
+
+    .search-tags {
+      display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+      animation: fadeUp .8s .38s ease both;
+    }
+    .tag-label { font-size: 0.6rem; color: var(--muted); font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+    .stag {
+      font-size: 0.63rem; font-weight: 800; padding: 5px 11px; border-radius: 20px;
+      background: rgba(15,25,60,0.7); border: 1px solid var(--border2);
+      color: var(--muted2); cursor: pointer; transition: all .2s;
+    }
+    .stag:hover { color: #fff; border-color: var(--accent); background: rgba(20,50,120,0.5); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden;
+      padding: 13px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-top: 24px;
+      position: relative;
+    }
+    .marquee-wrap::before,
+    .marquee-wrap::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; width: 56px; z-index: 2; pointer-events: none;
+    }
+    .marquee-wrap::before { left:  0; background: linear-gradient(90deg,  var(--dark), transparent); }
+    .marquee-wrap::after  { right: 0; background: linear-gradient(-90deg, var(--dark), transparent); }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 0 18px; white-space: nowrap;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.82rem; letter-spacing: 2px; color: var(--muted2);
+      cursor: pointer; transition: color .2s;
+    }
+    .marquee-item:hover { color: #fff; }
+    .marquee-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+    .marquee-price { color: var(--accent); font-size: 0.75rem; }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 22px 20px 12px;
+    }
+    .sec-label h2 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.78rem;
+      letter-spacing: 4px; color: var(--muted2); font-weight: 400;
+    }
+    .sec-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border2), transparent);
+    }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; padding: 0 12px 120px;
+    }
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden; cursor: pointer;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .2s, box-shadow .25s;
+      animation: fadeUp 0.45s ease both;
+    }
+    .product-card:nth-child(1){animation-delay:.04s}
+    .product-card:nth-child(2){animation-delay:.09s}
+    .product-card:nth-child(3){animation-delay:.14s}
+    .product-card:nth-child(4){animation-delay:.19s}
+    .product-card:nth-child(5){animation-delay:.24s}
+    .product-card:nth-child(6){animation-delay:.29s}
+    .product-card:nth-child(7){animation-delay:.34s}
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .product-card:active { transform:scale(.94); }
+    .product-card:hover  { border-color:#2e2e2e; box-shadow:0 10px 36px rgba(0,0,0,.5); transform:translateY(-3px); }
+
+    .card-thumb {
+      width:100%; aspect-ratio:16/9;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .card-thumb::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(180deg,transparent 20%,rgba(0,0,0,.72) 100%);
+    }
+    .card-thumb-letter {
+      position:relative; z-index:1;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:2.6rem; letter-spacing:4px;
+      opacity:.88; text-shadow:0 2px 24px rgba(0,0,0,.6); color:#fff;
+    }
+    .card-pill {
+      position:absolute; top:9px; left:9px; z-index:2;
+      font-size:.52rem; font-weight:900; padding:3px 8px;
+      border-radius:6px; letter-spacing:1.5px; text-transform:uppercase;
+    }
+    .card-info { padding:11px 12px 13px; }
+    .card-title { font-weight:900; font-size:.9rem; }
+    .card-sub   { font-size:.68rem; color:var(--muted); margin-top:2px; }
+    .card-price-row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+    .card-mini-price { font-family:'Bebas Neue',sans-serif; font-size:.95rem; color:var(--accent); letter-spacing:1px; font-weight:900; }
+    .card-arrow {
+      width:22px; height:22px; border-radius:50%;
+      background:var(--card2); border:1px solid var(--border2);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.7rem; color:var(--muted2);
+    }
+
+    .netflix { background:linear-gradient(135deg,#E50914,#350005); }
+    .canva   { background:linear-gradient(135deg,#00c4cc,#003b3e); }
+    .spotify { background:linear-gradient(135deg,#1DB954,#0a3d1e); }
+    .disney  { background:linear-gradient(135deg,#113ccf,#050f3e); }
+    .wetv    { background:linear-gradient(135deg,#00c853,#003520); }
+    .capcut  { background:linear-gradient(135deg,#2a2a2a,#060606); }
+    .vidio   { background:linear-gradient(135deg,#c0392b,#2a0505); }
+
+    .pill-netflix { background:rgba(229,9,20,.85);   color:#fff; }
+    .pill-canva   { background:rgba(0,196,204,.85);  color:#003; }
+    .pill-spotify { background:rgba(29,185,84,.85);  color:#003; }
+    .pill-disney  { background:rgba(17,60,207,.85);  color:#fff; }
+    .pill-wetv    { background:rgba(0,200,83,.85);   color:#003; }
+    .pill-capcut  { background:rgba(240,240,240,.85);color:#000; }
+    .pill-vidio   { background:rgba(192,57,43,.85);  color:#fff; }
+    .zoom  { background:linear-gradient(135deg,#2D8CFF,#0a3a80); }
+    .pill-zoom    { background:rgba(45,140,255,.85);  color:#fff; }
+    .gemini { background:linear-gradient(135deg,#8b5cf6,#1a0a40); }
+    .pill-gemini  { background:rgba(139,92,246,.85);  color:#fff; }
+    .youtube2 { background:linear-gradient(135deg,#FF0000,#1a0000); }
+    .pill-youtube2{ background:rgba(255,0,0,.85);     color:#fff; }
+    .gpt    { background:linear-gradient(135deg,#10a37f,#0a2a20); }
+    .pill-gpt     { background:rgba(16,163,127,.85);  color:#fff; }
+
+    /* ── DETAIL PAGE ── */
+    #detail-page { display:none; min-height:100vh; background:var(--dark); }
+    .detail-page-enter { animation:slideIn .28s cubic-bezier(.25,.46,.45,.94) both; }
+    @keyframes slideIn {
+      from { transform:translateX(30px); opacity:0; }
+      to   { transform:translateX(0); opacity:1; }
+    }
+    .detail-header {
+      display:flex; align-items:center; gap:12px; padding:14px 16px;
+      background:rgba(10,10,10,0.93);
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+    }
+    .back-btn {
+      background:var(--card); border:1px solid var(--border2); color:#fff;
+      width:36px; height:36px; border-radius:10px; font-size:1rem;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all .2s; flex-shrink:0;
+    }
+    .back-btn:hover { background:var(--card2); border-color:#444; }
+    .detail-header-title { font-family:'Nunito',sans-serif; font-size:1.2rem; font-weight:900; letter-spacing:0.3px; }
+
+    .detail-banner {
+      width:100%; height:145px;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue',sans-serif; font-size:4rem; letter-spacing:8px;
+      position:relative; overflow:hidden; color:#fff;
+    }
+    .detail-banner::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(180deg,transparent 20%,var(--dark) 100%);
+    }
+    .detail-banner span { position:relative; z-index:1; opacity:.88; }
+    .detail-info { padding:10px 18px 14px; border-bottom:1px solid var(--border); }
+    .detail-info h2 { font-family:'Nunito',sans-serif; font-size:1.5rem; font-weight:900; letter-spacing:0.3px; }
+    .detail-info p  { color:var(--muted2); font-size:.78rem; margin-top:5px; line-height:1.55; }
+
+    .pkgs-section { padding:8px 12px 130px; }
+    .group-title {
+      font-family:'Bebas Neue',sans-serif; font-size:.82rem; letter-spacing:3px;
+      color:var(--accent); margin-bottom:8px; margin-top:18px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .group-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(126,184,247,.3),transparent); }
+    .pkgs-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .pkg-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:12px 11px; cursor:pointer;
+      transition:all .2s cubic-bezier(.34,1.56,.64,1); position:relative; overflow:hidden;
+    }
+    .pkg-card:hover { border-color:var(--border2); transform:scale(.98); }
+    .pkg-card.selected {
+      border-color:var(--accent);
+      background:linear-gradient(135deg,rgba(10,30,80,0.9),rgba(5,15,50,0.95));
+      box-shadow:0 0 22px rgba(126,184,247,.15);
+    }
+    .pkg-name  { font-weight:900; font-size:.83rem; }
+    .pkg-desc  { font-size:.67rem; color:var(--muted); margin-top:2px; line-height:1.3; }
+    .pkg-price { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--accent); margin-top:7px; letter-spacing:1px; font-weight:900; }
+    .pkg-instan {
+      display:inline-flex; align-items:center; gap:3px;
+      background:rgba(126,184,247,.08); border:1px solid rgba(126,184,247,.25);
+      color:var(--accent); font-size:.57rem; font-weight:900;
+      padding:2px 7px; border-radius:20px; margin-top:5px; letter-spacing:.5px;
+    }
+    .pkg-check {
+      position:absolute; top:7px; right:7px; width:18px; height:18px;
+      background:var(--accent); color:#050e2a; border-radius:50%;
+      display:none; align-items:center; justify-content:center;
+      font-size:.6rem; font-weight:900;
+    }
+    .pkg-card.selected .pkg-check { display:flex; }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar {
+      position:fixed; bottom:0; left:0; right:0;
+      background:rgba(10,10,10,.97); border-top:1px solid var(--border);
+      padding:12px 16px; z-index:200; backdrop-filter:blur(20px);
+      touch-action: pan-y;
+    }
+    .sel-info { font-size:.72rem; color:var(--muted); margin-bottom:8px; min-height:16px; }
+    .sel-info span { color:var(--accent); font-weight:900; }
+    .order-btn {
+      width:100%; border:none; border-radius:12px; padding:15px;
+      font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:2.5px;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+      transition:all .25s;
+    }
+    .order-btn.wa {
+      background:linear-gradient(135deg,#25d366,#1aab52);
+      color:#fff; box-shadow:0 4px 20px rgba(37,211,102,.22);
+    }
+    .order-btn.wa:hover { box-shadow:0 6px 28px rgba(37,211,102,.35); transform:translateY(-1px); }
+    .order-btn:disabled { background:var(--card2); color:var(--muted); cursor:not-allowed; box-shadow:none; transform:none; }
+
+    /* ── SWIPE ROCKET BUTTON ── */
+    .swipe-btn-wrap {
+      position: relative; width: 100%; height: 64px;
+      border-radius: 36px; overflow: visible;
+      background: rgba(8,15,40,0.85);
+      border: 1px solid rgba(60,100,200,0.4);
+      user-select: none;
+    }
+    .swipe-fill {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 64px; border-radius: 36px;
+      background: linear-gradient(90deg, rgba(37,211,102,0.3), rgba(37,211,102,0.08));
+      pointer-events: none;
+    }
+    .swipe-label {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem;
+      letter-spacing: 3px; color: rgba(140,180,255,0.55);
+      pointer-events: none; transition: opacity 0.15s;
+    }
+    .swipe-info {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 900;
+      pointer-events: none; opacity: 0; transition: opacity 0.15s; gap: 5px;
+    }
+    .swipe-handle {
+      position: absolute; left: 5px; top: 50%;
+      transform: translateY(-50%);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: linear-gradient(135deg, #1a3a7a, #0d1f4a);
+      border: 1px solid rgba(90,140,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 16px rgba(80,140,255,0.4);
+      cursor: grab; z-index: 3;
+      touch-action: none;
+      will-change: left;
+    }
+    .swipe-handle svg { width: 36px; height: 36px; transform: rotate(90deg); pointer-events: none; }
+    #swipe-flame {
+      position: absolute; top: -10px; left: -60px;
+      width: calc(100% + 70px); height: calc(100% + 20px);
+      pointer-events: none; z-index: 1;
+    }
+    @keyframes hintBounce {
+      0%,100% { left: 5px; }
+      50%      { left: 20px; }
+    }
+    .swipe-btn-wrap.hint .swipe-handle { animation: hintBounce 0.9s ease 1s 2; }
+    .contact-row { display:flex; gap:8px; }
+    .contact-btn {
+      flex:1; background:linear-gradient(135deg,#0d1a40,#1a0d40);
+      border:1px solid rgba(100,140,255,.35); color:#a8c8ff;
+      border-radius:12px; padding:15px;
+      font-family:'Bebas Neue',sans-serif; font-size:.9rem; letter-spacing:2px;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+      transition:all .2s;
+      box-shadow: 0 0 18px rgba(80,100,255,0.15);
+    }
+    .contact-btn:hover { border-color:rgba(140,180,255,.6); color:#fff; box-shadow:0 0 28px rgba(100,120,255,0.3); }
+
+    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+
+    /* ── REMINDER MODAL OVERLAY ── */
+    .reminder-overlay {
+      position: fixed; inset: 0; z-index: 900;
+      background: rgba(0,0,0,0);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      pointer-events: none;
+      transition: background 250ms cubic-bezier(0.3,0.0,0.2,1.0);
+    }
+    .reminder-overlay.show {
+      background: rgba(0,0,0,0.65);
+      pointer-events: all;
+    }
+
+    /* Modal card */
+    .reminder-modal {
+      width: 100%; max-width: 360px;
+      background: linear-gradient(145deg, rgba(8,16,48,0.96), rgba(5,10,30,0.98));
+      border: 1px solid rgba(80,130,255,0.45);
+      border-radius: 20px; padding: 20px 18px 18px;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.75), 0 0 40px rgba(40,80,255,0.18);
+      backdrop-filter: blur(24px);
+      /* Initial state: invisible & small */
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 250ms cubic-bezier(0.3,0.0,0.2,1.0),
+                  transform 250ms cubic-bezier(0.3,0.0,0.2,1.0);
+    }
+    .reminder-overlay.show .reminder-modal {
+      opacity: 1;
+      transform: scale(1.0);
+    }
+
+    /* Header row */
+    .reminder-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .reminder-modal-left { display: flex; align-items: center; gap: 10px; }
+    .reminder-modal-icon {
+      font-size: 1.4rem; flex-shrink: 0; line-height: 1;
+    }
+    .reminder-modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem; letter-spacing: 2.5px; color: #fff;
+    }
+    .reminder-modal-close {
+      background: rgba(255,255,255,0.09);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      color: #c0cce8;
+      width: 36px; height: 36px; border-radius: 10px;
+      font-size: 1.1rem; font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .2s, color .2s;
+      touch-action: manipulation;
+    }
+    .reminder-modal-close:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+    /* Body */
+    .reminder-modal-body {
+      font-size: 0.62rem; font-weight: 900; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted2);
+      margin-bottom: 8px;
+    }
+    .reminder-modal-text {
+      font-size: 0.78rem; color: var(--text);
+      line-height: 1.65; font-weight: 600;
+      text-align: left;
+    }
+
+    /* Legacy selectors kept for old reminder items style (youtube) */
+    .reminder-item {
+      background: rgba(15,25,60,0.7);
+      border: 1px solid rgba(60,90,200,0.3);
+      border-radius: 10px; padding: 10px 12px;
+      margin-bottom: 7px;
+    }
+    .reminder-item:last-child { margin-bottom: 0; }
+    .reminder-tag {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.68rem; letter-spacing: 2.5px;
+      margin-bottom: 4px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .reminder-text {
+      font-size: 0.73rem; color: var(--text);
+      line-height: 1.5; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ SPACE BACKGROUND ═══ -->
+<canvas id="space-bg"></canvas>
+
+<!-- ═══ HOME ═══ -->
+<div id="home-page">
+  <header>
+    <div class="logo">
+      <span class="logo-pro">Pro</span><span class="logo-ji">ji</span><span class="logo-dot">.</span>
+    </div>
+    <a href="#" class="nav-cta" onclick="document.getElementById('product-section').scrollIntoView({behavior:'smooth'});return false;">Mulai Sekarang</a>
+  </header>
+
+  <div class="hero">
+    <!-- Icon Cluster -->
+    <div class="hero-icons-wrap">
+      <div class="stage-glow"></div>
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+
+      <!-- 11 Product Bubbles — semua clickable ke detail produk -->
+      <div class="app-icon icon-netflix" onclick="openDetail('netflix')" title="Netflix">
+        <img class="icon-img lg" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="N" onerror="this.outerHTML='<span style=color:#fff;font-family:Bebas+Neue;font-size:1.4rem>N</span>'"/>
+      </div>
+      <div class="app-icon icon-spotify" onclick="openDetail('spotify')" title="Spotify">
+        <img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spt" onerror="this.outerHTML='<span style=color:#1DB954;font-size:0.9rem;font-family:Bebas+Neue>SPT</span>'"/>
+      </div>
+      <div class="app-icon icon-canva" onclick="openDetail('canva')" title="Canva">
+        <img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Canva_Logo.svg" alt="C" onerror="this.outerHTML='<span style=color:#00c4cc;font-size:0.9rem;font-family:Bebas+Neue>C</span>'"/>
+      </div>
+      <div class="app-icon icon-youtube2" onclick="openDetail('youtube2')" title="YouTube Premium">
+        <img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YT" onerror="this.outerHTML='<span style=color:#ff0000;font-size:0.9rem;font-family:Bebas+Neue>YT</span>'"/>
+      </div>
+      <div class="app-icon icon-disney" onclick="openDetail('disney')" title="Disney+">
+        <img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" alt="D+" onerror="this.outerHTML='<span style=color:#fff;font-size:0.9rem;font-family:Bebas+Neue>D+</span>'"/>
+      </div>
+      <div class="app-icon icon-wetv" onclick="openDetail('wetv')" title="WeTV" style="font-size:0.7rem;font-family:'Bebas Neue',sans-serif;color:#00c853;letter-spacing:1px;">WeTV</div>
+      <div class="app-icon icon-gpt" onclick="openDetail('gpt')" title="ChatGPT Plus">GPT</div>
+      <div class="app-icon icon-zoom" onclick="openDetail('zoom')" title="Zoom">
+        <img class="icon-img" src="https://upload.wikimedia.org/wikipedia/commons/1/11/Zoom_Logo_2022.svg" alt="Zoom" onerror="this.outerHTML='<span style=color:#2D8CFF;font-size:0.65rem;font-family:Bebas+Neue>ZOOM</span>'"/>
+      </div>
+      <div class="app-icon icon-vidio" onclick="openDetail('vidio')" title="Vidio" style="font-size:0.65rem;font-family:'Bebas Neue',sans-serif;color:#fff;letter-spacing:1px;">Vidio</div>
+      <div class="app-icon icon-capcut" onclick="openDetail('capcut')" title="CapCut" style="font-size:0.65rem;font-family:'Bebas Neue',sans-serif;color:#ccc;letter-spacing:1px;">Cap<br/>Cut</div>
+      <div class="app-icon icon-gemini" onclick="openDetail('gemini')" title="Gemini Pro" style="font-size:0.6rem;font-family:'Bebas Neue',sans-serif;color:#c4a0ff;letter-spacing:1px;">Gem</div>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="hero-heading">
+      <span class="line-plain">Streaming <span class="line-accent" style="display:inline;background:linear-gradient(100deg,#7eb8f7 0%,#c4a0ff 55%,#e0d0ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Tanpa Batas,</span></span>
+      <span class="line-plain"><span class="line-italic" style="display:inline;font-style:italic;background:linear-gradient(110deg,#a8c8ff 0%,#d4b8ff 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Harga Bersahabat</span></span>
+    </h1>
+
+    <!-- Desc -->
+    <p class="hero-desc">
+      Akses Netflix, Spotify, Canva, dan 10+ layanan digital premium dengan harga terjangkau. Garansi akun aktif, proses instan, dukungan 24 jam.
+    </p>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-bar" type="text" id="mainSearch" placeholder="Cari akun favoritmu (ex: Netflix, YouTube)..." oninput="filterProducts(this.value)"/>
+      <button class="search-btn" onclick="filterProducts(document.getElementById('mainSearch').value)">➜</button>
+    </div>
+
+    <div class="search-tags">
+      <span class="tag-label">Populer:</span>
+      <span class="stag" onclick="openDetail('netflix')">🎬 Netflix</span>
+      <span class="stag" onclick="openDetail('spotify')">🎵 Spotify</span>
+      <span class="stag" onclick="openDetail('canva')">🎨 Canva</span>
+      <span class="stag" onclick="openDetail('youtube2')">▶️ YouTube</span>
+      <span class="stag" onclick="openDetail('disney')">✨ Disney+</span>
+    </div>
+
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <div class="sec-label" id="product-section"><h2>Pilih Produk</h2></div>
+
+  <div class="product-grid">
+    <div class="product-card" onclick="openDetail('netflix')">
+      <div class="card-thumb netflix">
+        <div class="card-pill pill-netflix">NETFLIX</div>
+        <span class="card-thumb-letter">N</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Netflix</div>
+        <div class="card-sub">1P2U & Private</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 6.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('canva')">
+      <div class="card-thumb canva">
+        <div class="card-pill pill-canva">CANVA</div>
+        <span class="card-thumb-letter">C</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Canva Pro</div>
+        <div class="card-sub">Design tanpa batas</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 3.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('spotify')">
+      <div class="card-thumb spotify">
+        <div class="card-pill pill-spotify">SPOTIFY</div>
+        <span class="card-thumb-letter">♪</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Spotify</div>
+        <div class="card-sub">Musik tanpa iklan</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 30.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('disney')">
+      <div class="card-thumb disney">
+        <div class="card-pill pill-disney">DISNEY+</div>
+        <span class="card-thumb-letter">✦</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Disney+ Hotstar</div>
+        <div class="card-sub">Sharing & Private</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 15.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('wetv')">
+      <div class="card-thumb wetv">
+        <div class="card-pill pill-wetv">WETV</div>
+        <span class="card-thumb-letter">W</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">WeTV</div>
+        <div class="card-sub">Drama Asia & Korea</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 12.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('capcut')">
+      <div class="card-thumb capcut">
+        <div class="card-pill pill-capcut">CAPCUT</div>
+        <span class="card-thumb-letter">✂</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">CapCut</div>
+        <div class="card-sub">Edit video premium</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 5.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('zoom')">
+      <div class="card-thumb zoom">
+        <div class="card-pill pill-zoom">ZOOM</div>
+        <span class="card-thumb-letter">Z</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Zoom</div>
+        <div class="card-sub">Meeting tanpa batas</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 8.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('vidio')">
+      <div class="card-thumb vidio">
+        <div class="card-pill pill-vidio">VIDIO</div>
+        <span class="card-thumb-letter">V</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Vidio</div>
+        <div class="card-sub">TV & Mobile</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 12.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('gemini')">
+      <div class="card-thumb gemini">
+        <div class="card-pill pill-gemini">GEMINI</div>
+        <span class="card-thumb-letter">G</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Gemini Pro</div>
+        <div class="card-sub">AI dari Google</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 35.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('gpt')">
+      <div class="card-thumb gpt">
+        <div class="card-pill pill-gpt">CHATGPT</div>
+        <span class="card-thumb-letter">✦</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">ChatGPT Plus</div>
+        <div class="card-sub">GPT-4 Sharing & Private</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 8.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="openDetail('youtube2')">
+      <div class="card-thumb youtube2">
+        <div class="card-pill pill-youtube2">YOUTUBE</div>
+        <span class="card-thumb-letter">▶</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">YouTube Premium</div>
+        <div class="card-sub">Indplan & Famplan</div>
+        <div class="card-price-row">
+          <div class="card-mini-price">Mulai Rp 7.000</div>
+          <div class="card-arrow">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="contact-row">
+      <button class="contact-btn" onclick="wa('')">💬 Chat Admin Sekarang</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DETAIL ═══ -->
+<div id="detail-page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="detail-header-title" id="d-title"></div>
+  </div>
+  <div class="detail-banner" id="d-banner"><span></span></div>
+  <div class="detail-info">
+    <h2 id="d-name"></h2>
+    <p id="d-desc"></p>
+  </div>
+  <div class="pkgs-section" id="pkgs-container"></div>
+  <div class="bottom-bar">
+    <div class="sel-info" id="sel-info">Pilih paket di atas untuk memesan.</div>
+    <!-- Swipe Rocket Button -->
+    <div class="swipe-btn-wrap hint" id="swipe-wrap">
+      <canvas id="swipe-flame"></canvas>
+      <div class="swipe-fill" id="swipe-fill"></div>
+      <div class="swipe-label" id="swipe-label">⟶ &nbsp; SWIPE UNTUK PESAN</div>
+      <div class="swipe-info" id="swipe-info"></div>
+      <div class="swipe-handle" id="swipe-handle">
+        <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fin kiri -->
+          <path d="M28,75 L14,100 L36,90 Z" fill="#2a75c5"/>
+          <!-- Fin kanan -->
+          <path d="M72,75 L86,100 L64,90 Z" fill="#2060aa"/>
+          <!-- Body bawah -->
+          <rect x="28" y="75" width="44" height="24" rx="4" fill="#2a75c5"/>
+          <rect x="28" y="75" width="22" height="24" rx="0" fill="#c8d8e8"/>
+          <!-- Body kiri putih -->
+          <path d="M50,8 Q30,30 28,75 L50,75 Z" fill="#e8eef5"/>
+          <!-- Body kanan biru -->
+          <path d="M50,8 Q70,30 72,75 L50,75 Z" fill="#3d8fdf"/>
+          <!-- Garis tengah -->
+          <line x1="50" y1="8" x2="50" y2="99" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <!-- Jendela -->
+          <circle cx="50" cy="50" r="11" fill="#0d1f3c" stroke="#5aabff" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="6" fill="#0a1628"/>
+          <circle cx="46" cy="47" r="2" fill="rgba(255,255,255,0.28)"/>
+          <!-- Highlight nose -->
+          <path d="M50,8 Q38,28 36,50 Q43,42 50,40 Z" fill="rgba(255,255,255,0.13)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterProducts(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.product-card').forEach(card => {
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    card.style.display = (!q || title.includes(q)) ? '' : 'none';
+  });
+}
+
+const PRODUCTS = {
+  netflix: {
+    name:'Netflix', banner:'N', bannerClass:'netflix', startPrice:'Rp 6.000',
+    desc:'Streaming film, series & anime favorit. Aman, bergaransi, pengiriman instan.',
+    groups:[
+      {title:'1P2U — Sharing (1 Profil 2 User)',items:[
+        {name:'3 Hari',desc:'Akses 3 hari',price:'Rp 6.000'},
+        {name:'1 Minggu',desc:'Akses 7 hari',price:'Rp 12.000'},
+        {name:'2 Minggu',desc:'Akses 14 hari',price:'Rp 20.000'},
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 25.000'},
+        {name:'2 Bulan',desc:'Akses 60 hari',price:'Rp 37.000'},
+        {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 55.000'},
+      ]},
+      {title:'1P1U — Sharing',items:[
+        {name:'3 Hari',desc:'Akses 3 hari',price:'Rp 7.000'},
+        {name:'1 Minggu',desc:'Akses 7 hari',price:'Rp 14.000'},
+        {name:'2 Minggu',desc:'Akses 14 hari',price:'Rp 23.000'},
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 40.000'},
+        {name:'2 Bulan',desc:'Akses 60 hari',price:'Rp 60.000'},
+        {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 90.000'},
+      ]}
+    ]
+  },
+  canva: {
+    name:'Canva Pro', banner:'C', bannerClass:'canva', startPrice:'Rp 3.000',
+    desc:'Desain grafis premium tanpa batas. Template eksklusif, font pro, ekspor tanpa watermark.',
+    groups:[{title:'Canva Pro',items:[
+      {name:'3 Hari',desc:'Akses 3 hari',price:'Rp 3.000'},
+      {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 5.000'},
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 6.000'},
+      {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 10.000'},
+      {name:'5 Bulan',desc:'Akses 150 hari',price:'Rp 15.000'},
+      {name:'1 Tahun',desc:'Akses 360 hari',price:'Rp 25.000'},
+      {name:'Life Time',desc:'Guarantee 12 Bulan',price:'Rp 30.000'},
+    ]}]
+  },
+  spotify: {
+    name:'Spotify Premium', banner:'♪', bannerClass:'spotify', startPrice:'Rp 30.000',
+    desc:'Nikmati musik tanpa iklan, kualitas audio terbaik, download offline.',
+    groups:[{title:'Spotify Individual Plan',items:[
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 30.000'},
+      {name:'2 Bulan',desc:'Akses 60 hari',price:'Rp 35.000'},
+      {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 45.000'},
+    ]}]
+  },
+  disney: {
+    name:'Disney+ Hotstar', banner:'✦', bannerClass:'disney', startPrice:'Rp 15.000',
+    desc:'Disney, Marvel, Star Wars, Pixar & olahraga live. Aman bergaransi.',
+    groups:[{title:'Disney+ Sharing',items:[
+      {name:'3 Hari',desc:'Akses 3 hari',price:'Rp 15.000'},
+      {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 20.000'},
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 32.000'},
+    ]}]
+  },
+  wetv: {
+    name:'WeTV', banner:'W', bannerClass:'wetv', startPrice:'Rp 6.000',
+    desc:'Drama Korea, China & Asia terlengkap. Update cepat, subtitle Indonesia.',
+    groups:[
+      {title:'WeTV Sharing',items:[
+        {name:'3 Hari',desc:'Akses 3 hari',price:'Rp 6.000'},
+        {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 10.000'},
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 15.000'},
+        {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 30.000'},
+      ]},
+      {title:'WeTV Private',items:[
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 50.000'},
+      ]}
+    ]
+  },
+  capcut: {
+    name:'CapCut', banner:'✂', bannerClass:'capcut', startPrice:'Rp 5.000',
+    desc:'Edit video profesional dengan fitur premium. Template keren, efek eksklusif.',
+    groups:[
+      {title:'CapCut Sharing',items:[
+        {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 5.000'},
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 15.000'},
+        {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 28.000'},
+      ]},
+      {title:'CapCut Private',items:[
+        {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 10.000'},
+        {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 40.000'},
+        {name:'3 Bulan',desc:'Akses 90 hari',price:'Rp 60.000'},
+      ]}
+    ]
+  },
+  zoom: {
+    name:'Zoom', banner:'Z', bannerClass:'zoom', startPrice:'Rp 8.000',
+    desc:'Meeting online profesional tanpa batas waktu. Cocok untuk kerja, kuliah & webinar.',
+    groups:[{title:'Zoom Premium',items:[
+      {name:'1 Hari',desc:'Akses 1 hari',price:'Rp 8.000'},
+      {name:'7 Hari',desc:'Akses 7 hari',price:'Rp 15.000'},
+      {name:'14 Hari',desc:'Akses 14 hari',price:'Rp 20.000'},
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 30.000'},
+    ]}]
+  },
+  gemini: {
+    name:'Gemini Pro', banner:'G', bannerClass:'gemini', startPrice:'Rp 35.000',
+    desc:'AI terpintar dari Google. Akses Gemini Advanced untuk produktivitas & kreativitas tanpa batas.',
+    groups:[{title:'Gemini Pro',items:[
+      {name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 35.000'},
+    ]}]
+  },
+  gpt: {
+    name:'ChatGPT Plus', banner:'✦', bannerClass:'gpt', startPrice:'Rp 8.000',
+    desc:'Akses ChatGPT Plus dengan GPT-4. Lebih cerdas, lebih cepat, tanpa batas.',
+    groups:[
+      {title:'Sharing',items:[
+        {name:'1 Hari',   desc:'Akses 1 hari',              price:'Rp 8.000'},
+        {name:'7 Hari',   desc:'Akses 7 hari',              price:'Rp 15.000'},
+        {name:'1 Bulan',  desc:'Akses 30 hari (1 user)',    price:'Rp 25.000'},
+        {name:'1 Bulan',  desc:'Akses 30 hari (5 user)',    price:'Rp 30.000'},
+      ]},
+      {title:'Private (Akun Seller / Pribadi)',items:[
+        {name:'1 Bulan',  desc:'Akses 30 hari',             price:'Rp 35.000'},
+      ]}
+    ]
+  },
+  youtube2: {
+    name:'YouTube Premium', banner:'▶', bannerClass:'youtube2', startPrice:'Rp 7.000',
+    desc:'Nonton YouTube tanpa iklan, background play, download video. Hemat & bergaransi.',
+    groups:[
+      {title:'Individual Plan',items:[
+        {name:'1 Bulan',  desc:'Akses 30 hari',  price:'Rp 15.000'},
+      ]},
+      {title:'Family Plan',items:[
+        {name:'1 Bulan',  desc:'Akses 30 hari',  price:'Rp 7.000'},
+        {name:'2 Bulan',  desc:'Akses 60 hari',  price:'Rp 12.000'},
+      ]}
+    ]
+  },
+  vidio: {
+    name:'Vidio', banner:'V', bannerClass:'vidio', startPrice:'Rp 12.000',
+    desc:'⚠️ Jangan pindah device! Nonton konten Indonesia favorit, olahraga live & series eksklusif.',
+    groups:[
+      {title:'Sharing — TV Only',items:[{name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 12.000'}]},
+      {title:'Private — TV Only',items:[{name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 20.000'}]},
+      {title:'Sharing — Mobile Only',items:[{name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 15.000'}]},
+      {title:'Private — Mobile Only',items:[{name:'1 Bulan',desc:'Akses 30 hari',price:'Rp 28.000'}]}
+    ]
+  }
+};
+
+const MARQUEE_COLORS = {
+  netflix:'#ff4d4d', canva:'#00c4cc', spotify:'#1DB954',
+  disney:'#5c85f5', wetv:'#00c853', capcut:'#cccccc', zoom:'#2D8CFF',
+  gemini:'#a78bfa', gpt:'#10a37f', youtube2:'#FF4444', vidio:'#e05050'
+};
+
+const WA_NUMBER = '6281291568677';
+let selProduct=null, selPkg=null;
+
+// Build marquee (after variables declared)
+(function buildMarquee(){
+  const track = document.getElementById('marquee-track');
+  const ids = Object.keys(PRODUCTS);
+  let html = '';
+  for(let r=0;r<2;r++){
+    ids.forEach(id=>{
+      const p = PRODUCTS[id];
+      if(!p || !p.name) return;
+      const col = MARQUEE_COLORS[id]||'#fff';
+      html += `<span class="marquee-item" onclick="openDetail('${id}')">
+        <span class="marquee-sep"></span>
+        <span style="color:${col}">${p.name.toUpperCase()}</span>
+        <span class="marquee-price">— ${p.startPrice}</span>
+      </span>`;
+    });
+  }
+  track.innerHTML = html;
+})();
+
+function openDetail(id){
+  const p=PRODUCTS[id]; if(!p)return;
+  _openDetail(id);
+  // show reminder banner setelah halaman detail muncul
+  if(REMINDERS[id]){
+    setTimeout(()=>showReminderBanner(id), 350);
+  }
+}
+
+const REMINDERS = {
+  youtube2: {
+    color: '#FF4444',
+    bg: 'linear-gradient(135deg,#FF0000,#1a0000)',
+    items: [
+      { tag: 'INDPLAN', text: 'Akun dari seller tidak bisa menggunakan akun dari customer.' },
+      { tag: 'FAMPLAN', text: 'Bisa pakai akun cust, asal selama setahun belum pernah 2x premium.' }
+    ]
+  },
+  canva: {
+    color: '#00c4cc',
+    bg: 'linear-gradient(135deg,#00c4cc,#003b3e)',
+    items: [
+      { tag: 'PERHATIAN', text: '+500p untuk designer. Life time tidak bisa digunakan untuk designer.' }
+    ]
+  }
+};
+
+function showReminderBanner(id){
+  const r = REMINDERS[id];
+  const p = PRODUCTS[id];
+
+  // hapus modal lama kalau ada
+  const old = document.getElementById('reminder-banner');
+  if(old) old.remove();
+
+  // Tentukan konten body berdasarkan tipe reminder
+  let bodyHTML = '';
+  if(id === 'canva'){
+    // Single-message style untuk Canva
+    bodyHTML = `
+      <div class="reminder-modal-body">PERHATIAN</div>
+      <div class="reminder-modal-text">Tambahan +500p untuk designer, akun life time tidak bisa untuk designer.</div>
+    `;
+  } else {
+    // Multi-item style untuk YouTube dan lainnya
+    bodyHTML = r.items.map(item=>`
+      <div class="reminder-item">
+        <div class="reminder-tag" style="color:${r.color}">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${r.color};flex-shrink:0"></span>
+          ${item.tag}
+        </div>
+        <div class="reminder-text">${item.text}</div>
+      </div>
+    `).join('');
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'reminder-overlay';
+  overlay.id = 'reminder-banner';
+  overlay.innerHTML = `
+    <div class="reminder-modal">
+      <div class="reminder-modal-header">
+        <div class="reminder-modal-left">
+          <span class="reminder-modal-icon">⚠️</span>
+          <div class="reminder-modal-title">Reminder ${p.name.toUpperCase()}</div>
+        </div>
+        <button class="reminder-modal-close" id="reminder-close-btn">✕</button>
+      </div>
+      ${bodyHTML}
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Trigger fade-in + scale-up
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ overlay.classList.add('show'); });
+  });
+
+  function closeModal(){
+    overlay.classList.remove('show');
+    setTimeout(()=>overlay.remove(), 300);
+  }
+
+  document.getElementById('reminder-close-btn').onclick = closeModal;
+  // Tap overlay backdrop juga tutup modal
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) closeModal();
+  });
+}
+
+function _openDetail(id){
+  const p=PRODUCTS[id]; if(!p)return;
+  selProduct=id; selPkg=null;
+  document.getElementById('d-title').textContent=p.name;
+  document.getElementById('d-name').textContent=p.name;
+  document.getElementById('d-desc').textContent=p.desc;
+  const banner=document.getElementById('d-banner');
+  banner.innerHTML=`<span>${p.banner}</span>`;
+  banner.className='detail-banner '+p.bannerClass;
+  const c=document.getElementById('pkgs-container');
+  c.innerHTML='';
+  p.groups.forEach(g=>{
+    const gt=document.createElement('div'); gt.className='group-title'; gt.textContent=g.title; c.appendChild(gt);
+    const grid=document.createElement('div'); grid.className='pkgs-grid';
+    g.items.forEach((item)=>{
+      const card=document.createElement('div'); card.className='pkg-card';
+      card.onclick=()=>selectPkg(item,card);
+      card.innerHTML=`<div class="pkg-check">✓</div>
+        <div class="pkg-name">${item.name}</div>
+        <div class="pkg-desc">${item.desc}</div>
+        <div class="pkg-price">${item.price}</div>
+        <div class="pkg-instan">⚡ INSTAN</div>`;
+      grid.appendChild(card);
+    });
+    c.appendChild(grid);
+  });
+  refreshBar();
+  document.getElementById('home-page').style.display='none';
+  const dp=document.getElementById('detail-page');
+  dp.style.display='block';
+  dp.classList.add('detail-page-enter');
+  setTimeout(()=>dp.classList.remove('detail-page-enter'),300);
+  window.scrollTo(0,0);
+}
+
+function selectPkg(item,el){
+  document.querySelectorAll('.pkg-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); selPkg=item; refreshBar();
+}
+
+function refreshBar(){
+  const info=document.getElementById('sel-info');
+  if(selPkg){
+    info.innerHTML=`Dipilih: <span>${selPkg.name}</span> — <span>${selPkg.price}</span>`;
+  } else {
+    info.textContent='Pilih paket di atas untuk memesan.';
+  }
+}
+
+function goBack(){
+  document.getElementById('detail-page').style.display='none';
+  document.getElementById('home-page').style.display='block';
+  selProduct=null; selPkg=null;
+  // Scroll langsung ke section produk
+  setTimeout(()=>{
+    const sec = document.getElementById('product-section');
+    if(sec) sec.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 50);
+  // tutup reminder modal kalau masih ada
+  const banner = document.getElementById('reminder-banner');
+  if(banner){ banner.classList.remove('show'); setTimeout(()=>banner.remove(), 300); }
+}
+
+function pesanSekarang(){
+  if(!selPkg||!selProduct)return;
+  const p=PRODUCTS[selProduct];
+  const msg=encodeURIComponent(
+    `Halo kak Proji Digital!\n\nSaya mau order:\n`+
+    `Produk : ${p.name}\nPaket  : ${selPkg.name}\nHarga  : ${selPkg.price}\n\n`+
+    `Mohon diproses ya kak, terima kasih!`
+  );
+  window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`,'_blank');
+}
+
+function wa(msg){
+  const m=msg?encodeURIComponent(msg):'';
+  window.open(`https://wa.me/${WA_NUMBER}${m?'?text='+m:''}`,'_blank');
+}
+
+/* ═══ SWIPE ROCKET BUTTON ═══ */
+let swipeActive = false;
+(function(){
+  const wrap   = document.getElementById('swipe-wrap');
+  const handle = document.getElementById('swipe-handle');
+  const fill   = document.getElementById('swipe-fill');
+  const label  = document.getElementById('swipe-label');
+  const info   = document.getElementById('swipe-info');
+  const flameC = document.getElementById('swipe-flame');
+  const fctx   = flameC.getContext('2d');
+
+  const PAD = 5, HW = 54;
+  let startX = 0, startLeft = PAD, pct = 0;
+
+  const FLAME_OFFSET_X = 60; // canvas starts 60px to the left of wrap
+  const FLAME_OFFSET_Y = 10;
+
+  function resizeC(){
+    const w = wrap.offsetWidth;
+    const h = wrap.offsetHeight;
+    if(w > 0 && h > 0){
+      flameC.width  = w + 70;
+      flameC.height = h + 20;
+    }
+  }
+  resizeC();
+  setTimeout(resizeC, 100);
+  window.addEventListener('resize', resizeC);
+
+  // flame
+  const fp=[];
+  function flame(x,y){ for(let i=0;i<3;i++) fp.push({x,y,vx:-(1+Math.random()*2),vy:(Math.random()-.5)*1.5,life:1,decay:.055+Math.random()*.04,r:3+Math.random()*5}); }
+  (function animF(){
+    fctx.clearRect(0,0,flameC.width,flameC.height);
+    for(let i=fp.length-1;i>=0;i--){
+      const p=fp[i]; p.x+=p.vx; p.y+=p.vy; p.vx*=.92; p.life-=p.decay;
+      if(p.life<=0){fp.splice(i,1);continue;}
+      const g=fctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*2.5);
+      g.addColorStop(0,`rgba(255,255,255,${p.life})`);
+      g.addColorStop(.35,`rgba(120,190,255,${p.life*.75})`);
+      g.addColorStop(1,'transparent');
+      fctx.fillStyle=g; fctx.beginPath(); fctx.arc(p.x,p.y,p.r*2.5,0,Math.PI*2); fctx.fill();
+    }
+    requestAnimationFrame(animF);
+  })();
+
+  function getMax(){ return wrap.offsetWidth - HW - PAD*2; }
+
+  function setPos(left){
+    const max=getMax();
+    const cl=Math.max(PAD, Math.min(left, PAD+max));
+    pct=(cl-PAD)/max;
+    handle.style.left=cl+'px';
+    fill.style.width=(cl+HW-PAD)+'px';
+    label.style.opacity=pct>.12?'0':'1';
+    if(pct>.12 && selPkg){
+      const p=PRODUCTS[selProduct];
+      info.innerHTML=`🚀 <span style="color:#a8c8ff">${p?p.name:''}</span> · <span style="color:#4ade80">${selPkg.price}</span>`;
+      info.style.opacity='1';
+    } else { info.style.opacity='0'; }
+    if(pct>=.95){ trigger(); }
+  }
+
+  function trigger(){
+    swipeActive=false;
+    const max=getMax();
+    handle.style.left=(PAD+max)+'px';
+    fill.style.width=(PAD+max+HW-PAD)+'px';
+    setTimeout(()=>{ pesanSekarang(); reset(); }, 250);
+  }
+
+  function reset(){
+    swipeActive=false; pct=0;
+    handle.style.left=PAD+'px';
+    fill.style.width=HW+'px';
+    label.style.opacity='1'; info.style.opacity='0';
+  }
+
+  // ── POINTER EVENTS (handles both touch & mouse, most reliable on mobile) ──
+  handle.addEventListener('pointerdown', function(e){
+    if(!selPkg) return;
+    // pastikan canvas size benar setiap kali mulai swipe
+    resizeC();
+    swipeActive = true;
+    startX = e.clientX;
+    startLeft = parseFloat(handle.style.left)||PAD;
+    handle.setPointerCapture(e.pointerId);
+    wrap.classList.remove('hint');
+    e.preventDefault();
+  });
+
+  handle.addEventListener('pointermove', function(e){
+    if(!swipeActive) return;
+    const newLeft = startLeft + (e.clientX - startX);
+    const max = getMax();
+    const cl = Math.max(PAD, Math.min(newLeft, PAD+max));
+    // spawn flame lebih banyak di belakang roket (sisi kiri handle)
+    if(cl > PAD + 2){
+      // koordinat di canvas = posisi di wrap + FLAME_OFFSET_X
+      const fx = cl + FLAME_OFFSET_X;
+      const fy = (flameC.height||44) / 2;
+      for(let i=0;i<4;i++) flame(fx, fy);
+    }
+    setPos(newLeft);
+  });
+
+  handle.addEventListener('pointerup', function(e){
+    if(!swipeActive) return;
+    swipeActive = false;
+    handle.releasePointerCapture(e.pointerId);
+    if(pct < .95) reset();
+  });
+
+  handle.addEventListener('pointercancel', function(){
+    swipeActive = false; reset();
+  });
+
+  // hint
+  setInterval(()=>{
+    if(selPkg && !swipeActive){
+      wrap.classList.remove('hint'); void wrap.offsetWidth; wrap.classList.add('hint');
+    }
+  }, 3000);
+})();
+
+/* ═══ SPACE BACKGROUND ═══ */
+(function(){
+  const c   = document.getElementById('space-bg');
+  const ctx = c.getContext('2d');
+  let W = c.width  = window.innerWidth;
+  let H = c.height = window.innerHeight;
+
+  const NUM   = 250;
+  const SPEED = 3.0;
+  const stars = [];
+
+  function mkStar() {
+    return { x:(Math.random()-0.5)*W*2, y:(Math.random()-0.5)*H*2, z:Math.random()*W, pz:0 };
+  }
+  for(let i=0;i<NUM;i++) stars.push(mkStar());
+
+  function drawNebula() {
+    const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W);
+    bg.addColorStop(0,'#080d2a'); bg.addColorStop(0.6,'#030614'); bg.addColorStop(1,'#000002');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+    const n1=ctx.createRadialGradient(W*0.80,H*0.22,0,W*0.80,H*0.22,W*0.45);
+    n1.addColorStop(0,'rgba(20,60,255,0.65)'); n1.addColorStop(0.25,'rgba(15,45,210,0.45)');
+    n1.addColorStop(0.55,'rgba(8,25,140,0.22)'); n1.addColorStop(1,'transparent');
+    ctx.fillStyle=n1; ctx.fillRect(0,0,W,H);
+
+    const n1b=ctx.createRadialGradient(W*0.82,H*0.18,0,W*0.82,H*0.18,W*0.18);
+    n1b.addColorStop(0,'rgba(40,80,255,0.55)'); n1b.addColorStop(0.5,'rgba(20,55,200,0.25)');
+    n1b.addColorStop(1,'transparent');
+    ctx.fillStyle=n1b; ctx.fillRect(0,0,W,H);
+
+    const n2=ctx.createRadialGradient(W*0.12,H*0.62,0,W*0.12,H*0.62,W*0.35);
+    n2.addColorStop(0,'rgba(0,80,200,0.50)'); n2.addColorStop(0.4,'rgba(0,55,160,0.25)');
+    n2.addColorStop(1,'transparent');
+    ctx.fillStyle=n2; ctx.fillRect(0,0,W,H);
+
+    const n3=ctx.createRadialGradient(W*0.5,H*0.5,0,W*0.5,H*0.5,W*0.55);
+    n3.addColorStop(0,'rgba(5,15,70,0.20)'); n3.addColorStop(1,'transparent');
+    ctx.fillStyle=n3; ctx.fillRect(0,0,W,H);
+  }
+
+  function loop() {
+    ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,0,W,H);
+    drawNebula();
+    const cx=W/2, cy=H/2;
+    for(let i=0;i<stars.length;i++){
+      const s=stars[i];
+      s.pz=s.z; s.z-=SPEED;
+      if(s.z<=0){ Object.assign(stars[i],mkStar()); stars[i].z=W; stars[i].pz=W; continue; }
+      const sc=W/s.z, sx=s.x*sc+cx, sy=s.y*sc+cy;
+      if(sx<-10||sx>W+10||sy<-10||sy>H+10) continue;
+      const ps=W/s.pz, px=s.x*ps+cx, py=s.y*ps+cy;
+      const progress=1-s.z/W;
+      const size=Math.max(0.3,progress*3.4);
+      const alpha=Math.min(1,progress*1.9);
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(sx,sy);
+      ctx.strokeStyle=`rgba(150,195,255,${alpha*0.38})`; ctx.lineWidth=size*0.5; ctx.stroke();
+      if(progress>0.40){
+        const gr=size*6;
+        const g=ctx.createRadialGradient(sx,sy,0,sx,sy,gr);
+        g.addColorStop(0,`rgba(190,220,255,${alpha*0.50})`);
+        g.addColorStop(0.35,`rgba(100,160,255,${alpha*0.14})`);
+        g.addColorStop(1,'transparent');
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,gr,0,Math.PI*2); ctx.fill();
+      }
+      ctx.beginPath(); ctx.arc(sx,sy,size,0,Math.PI*2);
+      ctx.fillStyle=`rgba(240,250,255,${alpha})`; ctx.fill();
+      if(progress>0.72){
+        const sp=size*3.5;
+        ctx.strokeStyle=`rgba(220,242,255,${alpha*0.55})`; ctx.lineWidth=0.7;
+        ctx.beginPath();
+        ctx.moveTo(sx-sp,sy); ctx.lineTo(sx+sp,sy);
+        ctx.moveTo(sx,sy-sp); ctx.lineTo(sx,sy+sp);
+        ctx.stroke();
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  drawNebula(); loop();
+  window.addEventListener('resize',()=>{ W=c.width=window.innerWidth; H=c.height=window.innerHeight; drawNebula(); });
+})();
+</script>
+</body>
+</html>
